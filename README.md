@@ -5,3 +5,4 @@ Gif Searcher for Qulix Systems
 
 (Ниже, довожу до рабочего состояния, после дедлайна 😕 )
 ## UPD:
+- implement SearchView
