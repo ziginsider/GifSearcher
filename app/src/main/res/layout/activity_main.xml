@@ -12,12 +12,14 @@
         android:layout_height="wrap_content" />
 
     <SearchView
+        android:id="@+id/searchView"
         android:layout_width="300dp"
         android:layout_height="30dp"
         android:background="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        />
 
     <ProgressBar
         android:id="@+id/progressBar"
