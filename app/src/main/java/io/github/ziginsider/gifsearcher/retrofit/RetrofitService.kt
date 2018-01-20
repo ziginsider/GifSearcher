@@ -1,4 +1,4 @@
-package io.github.ziginsider.gifsearcher.rxretrofit
+package io.github.ziginsider.gifsearcher.retrofit
 
 import io.github.ziginsider.gifsearcher.model.SearchData
 import io.reactivex.Observable
@@ -6,17 +6,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import
+
 
 /**
  * Created by zigin on 20.01.2018.
  */
 interface RetrofitService {
-
-    companion object {
-        @JvmStatic val API_KEY = "edloSyPsEKlbTvQrW2E7XB3tS3XPs0DC"
-    }
-
 
     //fun getSearchGif() : Observable<SearchData>
     @GET("gifs/search")

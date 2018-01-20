@@ -14,12 +14,12 @@
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="300dp"
-        android:layout_height="30dp"
-        android:background="@android:color/white"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="20dp"
-        />
+        android:queryHint="GIF Search..."
+        android:background="@android:color/holo_blue_light" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -27,6 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>

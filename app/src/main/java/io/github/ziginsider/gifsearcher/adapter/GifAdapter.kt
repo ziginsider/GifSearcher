@@ -5,7 +5,7 @@ import android.view.View
 import io.github.ziginsider.gifsearcher.R
 import io.github.ziginsider.gifsearcher.model.Gif
 import android.text.TextUtils
-import com.squareup.picasso.Picasso
+//import com.squareup.picasso.Picasso
 
 
 /**
@@ -28,15 +28,15 @@ class GifAdapter(gifs: List<Gif>,
 
     override fun View.bind(item: Gif) {
 
-        var image: GiphyImage? = null
-        if (item.images != null) {
-            if (item.images.original_still != null) {
-                image = item.images.original_still
-            }
-        }
-        if (image != null) {
-            Picasso.with(context).load(image!!.url).placeholder(DrawableHelper.getRandomColorDrawable(context)).into(holder.image)
-
-        }
+//        var image: GiphyImage? = null
+//        if (item.images != null) {
+//            if (item.images.original_still != null) {
+//                image = item.images.original_still
+//            }
+//        }
+//        if (image != null) {
+//            Picasso.with(context).load(image!!.url).placeholder(DrawableHelper.getRandomColorDrawable(context)).into(holder.image)
+//
+//        }
     }
 }
