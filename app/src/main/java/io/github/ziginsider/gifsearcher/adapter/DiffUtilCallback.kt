@@ -15,7 +15,7 @@ class DiffUtilCallback(private val oldItems: List<Gif>,
     override fun getNewListSize() = newItems.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            oldItems[oldItemPosition].id == newItems[newItemPosition].id
+            oldItems[oldItemPosition].url == newItems[newItemPosition].url
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
             oldItems[oldItemPosition] == newItems[newItemPosition]
