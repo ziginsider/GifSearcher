@@ -31,20 +31,12 @@ class GifAdapter(gifs: List<Gif>,
 
     override fun View.bind(item: Gif) {
 
-//
-//        Glide.with(holder?.itemView?.gifPicture?.context)
-//                .asGif()
-//                .load(item.images.fixed_width.url)
-//                .into(holder?.itemView?.gifPicture)
+        Glide.with(gifItem.context)
+                .asGif()
+                .load(item.images.fixed_width.url)
+                .into(gifItem)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        super.onBindViewHolder(holder, position)
-        Glide.with(holder.itemView.gifItem.context)
-                .asGif()
-                .load(itemList[position].images.fixed_width.url)
-                .into(holder.itemView?.gifItem)
-    }
 
 
 }
