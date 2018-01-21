@@ -13,6 +13,7 @@ Giphy + Retrofit 2 + RxJava 2 + Kotlin
 - add Retrofit + RxJava 2 with RxAdapter by Jake Wharton
 - add offset in request (Giphy Endpoints)
 - add endless RecyclerView pagging
+- add ViewModel Android Architecture Components (save state on orientation change)
 
 ## screenshoots
 
