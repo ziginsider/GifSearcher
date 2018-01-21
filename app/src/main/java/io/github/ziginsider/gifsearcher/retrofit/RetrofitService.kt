@@ -14,18 +14,6 @@ import retrofit2.http.Query
  */
 interface RetrofitService {
 
-
-//    companion object Factory {
-//        fun create(): RetrofitService {
-//            val retrofit = Retrofit.Builder()
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .baseUrl("http://api.giphy.com/")
-//                    .build()
-//
-//            return retrofit.create(RetrofitService::class.java)
-//        }
-//    }
-
     companion object {
         fun create(): RetrofitService {
             val retrofit = Retrofit.Builder()
@@ -37,8 +25,9 @@ interface RetrofitService {
     }
 
 
-    @GET("/v1/gifs/trending?api_key=edloSyPsEKlbTvQrW2E7XB3tS3XPs0DC")
-    abstract fun getTrendingGifs(): Observable<SearchData>
+    @GET("/v1/gifs/trending")
+    abstract fun getTrendingGifs(@Query("limit") limit: Int,
+                                 @Query("api_key") key: String): Call<SearchData>//Observable<SearchData>
 
     @GET("/v1/gifs/search")
     abstract fun getSearchGifs(@Query("q") search: String,

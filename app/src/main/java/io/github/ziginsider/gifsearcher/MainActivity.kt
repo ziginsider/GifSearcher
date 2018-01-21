@@ -29,10 +29,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        progressBar.visibility = View.GONE
-
         searchViewInit()
 
+        getTrending()
 
     }
 
@@ -91,7 +90,21 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     private fun getGifs(query: String) {
+        progressBar.visibility = View.VISIBLE
         RetrofitService.create().getSearchGifs(query, LIMIT_SEARCH_QUERY, API_KEY).enqueue(object : Callback<SearchData> {
+            override fun onResponse(call: Call<SearchData>, response: Response<SearchData>) {
+                updateAdapter(response.body()!!.data)
+                progressBar.visibility = View.GONE
+            }
+
+            override fun onFailure(call: Call<SearchData>, t: Throwable?) {
+            }
+        })
+    }
+
+    private fun getTrending() {
+        progressBar.visibility = View.VISIBLE
+        RetrofitService.create().getTrendingGifs(LIMIT_SEARCH_QUERY, API_KEY).enqueue(object : Callback<SearchData> {
             override fun onResponse(call: Call<SearchData>, response: Response<SearchData>) {
                 updateAdapter(response.body()!!.data)
                 progressBar.visibility = View.GONE
