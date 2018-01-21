@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private var recyclerAdapter: GifAdapter? = null
     private var offset = 0
-    private var query = ""
+    private var mquery = ""
     private var isSearch = false
     private var gifViewModel: GifViewModel? = null
 
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun pagingGifs() {
         offset += LIMIT_SEARCH_QUERY
-        if (isSearch) getGifs(query, offset)
+        if (isSearch) getGifs(mquery, offset)
         else getTrending(offset)
     }
 
@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 offset = 0
                 isSearch = true
+                mquery = query
                 getGifs(query, offset)
                 return false
         }
