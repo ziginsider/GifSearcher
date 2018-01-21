@@ -6,22 +6,19 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.SearchView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.Log
 import android.view.View
 import io.github.ziginsider.gifsearcher.adapter.gifAdapter
 import io.github.ziginsider.gifsearcher.model.Gif
-import io.github.ziginsider.gifsearcher.model.SearchData
 import io.github.ziginsider.gifsearcher.retrofit.API_KEY
 import io.github.ziginsider.gifsearcher.retrofit.LIMIT_SEARCH_QUERY
 import io.github.ziginsider.gifsearcher.retrofit.RetrofitService
 import io.github.ziginsider.gifsearcher.utils.isPortrait
 import io.github.ziginsider.gifsearcher.utils.toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,50 +68,34 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    //TODO RX
-//    private fun searchGiphyQuery(query: String) {
-//        service.getSearchgifs(query, LIMIT_SEARCH_QUERY, API_KEY)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(object : Consumer<SearchData>() {
-//                    fun call(responseData: SearchData) {
-//
-//                        progressBar.visibility = View.GONE
-//                        val temp = getGiphyObjectsOutOfResponse(responseData)
-//                        Collections.reverse(temp)
-//                        for (temData in temp) {
-//                            giphyList.add(0, temData)
-//                        }
-//                        recyclerAdapter.update(giphyList)
-//
-//                    }
-//                })
-//    }
-
     private fun getGifs(query: String) {
         progressBar.visibility = View.VISIBLE
-        RetrofitService.create().getSearchGifs(query, LIMIT_SEARCH_QUERY, API_KEY).enqueue(object : Callback<SearchData> {
-            override fun onResponse(call: Call<SearchData>, response: Response<SearchData>) {
-                updateAdapter(response.body()!!.data)
-                progressBar.visibility = View.GONE
-            }
 
-            override fun onFailure(call: Call<SearchData>, t: Throwable?) {
-            }
-        })
+        RetrofitService.create()
+                .getSearchGifsRx(query, LIMIT_SEARCH_QUERY, API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    response -> updateAdapter(response.data)
+                    progressBar.visibility = View.GONE
+                }, { error ->
+                    error.printStackTrace()
+                })
     }
 
     private fun getTrending() {
         progressBar.visibility = View.VISIBLE
-        RetrofitService.create().getTrendingGifs(LIMIT_SEARCH_QUERY, API_KEY).enqueue(object : Callback<SearchData> {
-            override fun onResponse(call: Call<SearchData>, response: Response<SearchData>) {
-                updateAdapter(response.body()!!.data)
-                progressBar.visibility = View.GONE
-            }
 
-            override fun onFailure(call: Call<SearchData>, t: Throwable?) {
-            }
-        })
+        RetrofitService.create()
+                .getTrendingGifsRx(LIMIT_SEARCH_QUERY, API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    response -> updateAdapter(response.data)
+                    progressBar.visibility = View.GONE
+                }, { error ->
+                    error.printStackTrace()
+                })
     }
 }
 
