@@ -1,6 +1,8 @@
 # GifSearcher
 Gif Searcher for Qulix Systems
 
+Giphy + Retrofit 2 + RxJava 2 + Kotlin
+
 
 (Ниже, то, что доделывал после дедлайна 😕 )
 ## UPD:
