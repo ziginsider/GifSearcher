@@ -1,11 +1,11 @@
 package io.github.ziginsider.gifsearcher
 
 import android.app.SearchManager
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.View
 import io.github.ziginsider.gifsearcher.adapter.EndlessScrollListener
@@ -16,6 +16,7 @@ import io.github.ziginsider.gifsearcher.retrofit.LIMIT_SEARCH_QUERY
 import io.github.ziginsider.gifsearcher.retrofit.RetrofitService
 import io.github.ziginsider.gifsearcher.utils.isPortrait
 import io.github.ziginsider.gifsearcher.utils.toast
+import io.github.ziginsider.gifsearcher.viewmodel.GifViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -28,8 +29,7 @@ class MainActivity : AppCompatActivity() {
     private var offset = 0
     private var query = ""
     private var isSearch = false
-    private var loadedList: List<Gif>? = null
-
+    private var gifViewModel: GifViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +37,10 @@ class MainActivity : AppCompatActivity() {
 
         searchViewInit()
 
-        getTrending(offset)
+        gifViewModel = ViewModelProviders.of(this).get(GifViewModel::class.java)
 
+        if (gifViewModel!!.loadedGifs != null) updateAdapter(gifViewModel!!.loadedGifs!!)
+        else getTrending(offset)
     }
 
     private fun updateAdapter(gifsList: List<Gif>) {
@@ -54,7 +56,6 @@ class MainActivity : AppCompatActivity() {
                 { toast ("My URL = ${images.fixed_width.url}")})
         with(recyclerView) {
             layoutManager = GridLayoutManager(this.context, if (isPortrait()) 3 else 4)
-            //layoutManager = LinearLayoutManager(this.context)
             setHasFixedSize(true)
             adapter = recyclerAdapter
             addOnScrollListener(EndlessScrollListener({pagingGifs()}, layoutManager as GridLayoutManager))
@@ -65,18 +66,14 @@ class MainActivity : AppCompatActivity() {
         offset += LIMIT_SEARCH_QUERY
         if (isSearch) getGifs(query, offset)
         else getTrending(offset)
-        toast("AAAAAAA")
     }
 
     private fun addGifs(gifsList: List<Gif>) {
         if (offset == 0) updateAdapter(gifsList)
         else {
-//            loadedList = recyclerAdapter!!.getItems()
-//            loadedList!!.containsAll(gifsList)
-//            updateAdapter(loadedList!!)
             addAdapter(gifsList)
-            toast("bbbbb")
         }
+        gifViewModel?.loadedGifs = recyclerAdapter?.getItems()
     }
 
     private fun searchViewInit() {
@@ -93,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                //offset = 0
                 return false
             }
         })
