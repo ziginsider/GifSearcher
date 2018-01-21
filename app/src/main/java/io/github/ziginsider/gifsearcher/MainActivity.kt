@@ -5,16 +5,17 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.View
-import io.github.ziginsider.gifsearcher.adapter.GifAdapter
+import io.github.ziginsider.gifsearcher.adapter.gifAdapter
 import io.github.ziginsider.gifsearcher.model.Gif
 import io.github.ziginsider.gifsearcher.model.SearchData
 import io.github.ziginsider.gifsearcher.retrofit.API_KEY
 import io.github.ziginsider.gifsearcher.retrofit.LIMIT_SEARCH_QUERY
 import io.github.ziginsider.gifsearcher.retrofit.RetrofitService
+import io.github.ziginsider.gifsearcher.utils.toast
+
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,7 +24,7 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
 
-    private var recyclerAdapter: GifAdapter? = null
+    private var recyclerAdapter: gifAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView(gifsList: List<Gif>) {
-        recyclerAdapter = GifAdapter(gifsList, {})
+        recyclerAdapter = gifAdapter(gifsList,
+                { toast ("My URL = ${images.fixed_width.url}")})
         with(recyclerView) {
             Log.d("TAG", gifsList.toString())
             layoutManager = GridLayoutManager(this.context, 3)
@@ -57,8 +59,6 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener, android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                //toast("I'm toast message! $query")
-                progressBar.visibility = View.VISIBLE
                 getGifs(query)
                 return false
         }

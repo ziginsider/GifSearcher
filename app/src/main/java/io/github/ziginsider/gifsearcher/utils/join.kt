@@ -1,4 +1,4 @@
-package io.github.ziginsider.kotlindiffutil.utils
+package io.github.ziginsider.gifsearcher.utils
 
 import android.app.Activity
 import android.view.LayoutInflater

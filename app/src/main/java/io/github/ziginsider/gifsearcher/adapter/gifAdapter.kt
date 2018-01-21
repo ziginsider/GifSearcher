@@ -8,14 +8,13 @@ import android.text.TextUtils
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.gif_item.view.*
 
-//import com.squareup.picasso.Picasso
 
 
 /**
  * Created by zigin on 20.01.2018.
  */
 
-class GifAdapter(gifs: List<Gif>,
+class gifAdapter(gifs: List<Gif>,
                  private var itemClick: Gif.() -> Unit = {})
     : BaseAdapter<Gif>(gifs, R.layout.gif_item) {
 

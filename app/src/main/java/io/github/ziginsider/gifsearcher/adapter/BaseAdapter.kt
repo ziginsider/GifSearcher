@@ -3,7 +3,7 @@ package io.github.ziginsider.gifsearcher.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import io.github.ziginsider.kotlindiffutil.utils.inflate
+import io.github.ziginsider.gifsearcher.utils.inflate
 
 /**
  * Created by zigin on 20.01.2018.
