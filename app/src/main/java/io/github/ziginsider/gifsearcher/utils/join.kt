@@ -1,6 +1,7 @@
 package io.github.ziginsider.gifsearcher.utils
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,4 +19,6 @@ infix fun ViewGroup.inflate(layoutResId: Int): View =
 
 fun Activity.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, message, duration).show()
+
+fun Activity.isPortrait() = this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 

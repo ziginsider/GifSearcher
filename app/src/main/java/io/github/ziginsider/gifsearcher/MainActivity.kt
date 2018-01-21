@@ -14,6 +14,7 @@ import io.github.ziginsider.gifsearcher.model.SearchData
 import io.github.ziginsider.gifsearcher.retrofit.API_KEY
 import io.github.ziginsider.gifsearcher.retrofit.LIMIT_SEARCH_QUERY
 import io.github.ziginsider.gifsearcher.retrofit.RetrofitService
+import io.github.ziginsider.gifsearcher.utils.isPortrait
 import io.github.ziginsider.gifsearcher.utils.toast
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 { toast ("My URL = ${images.fixed_width.url}")})
         with(recyclerView) {
             Log.d("TAG", gifsList.toString())
-            layoutManager = GridLayoutManager(this.context, 3)
+            layoutManager = GridLayoutManager(this.context, if (isPortrait()) 3 else 4)
             //setHasFixedSize(true)
             adapter = recyclerAdapter
             //scheduleLayoutAnimation()
