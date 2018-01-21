@@ -5,11 +5,11 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.View
-import io.github.ziginsider.gifsearcher.adapter.gifAdapter
+import io.github.ziginsider.gifsearcher.adapter.EndlessScrollListener
+import io.github.ziginsider.gifsearcher.adapter.GifAdapter
 import io.github.ziginsider.gifsearcher.model.Gif
 import io.github.ziginsider.gifsearcher.retrofit.API_KEY
 import io.github.ziginsider.gifsearcher.retrofit.LIMIT_SEARCH_QUERY
@@ -24,7 +24,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
 
-    private var recyclerAdapter: gifAdapter? = null
+    private var recyclerAdapter: GifAdapter? = null
+    private var offset = 0
+    private var query = ""
+    private var isSearch = false
+    private var loadedList: List<Gif>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         searchViewInit()
 
-        getTrending()
+        getTrending(offset)
 
     }
 
@@ -40,14 +45,37 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter?.update(gifsList) ?: setUpRecyclerView(gifsList)
     }
 
+    private fun addAdapter(gifsList: List<Gif>) {
+        recyclerAdapter?.add(gifsList) ?: setUpRecyclerView(gifsList)
+    }
+
     private fun setUpRecyclerView(gifsList: List<Gif>) {
-        recyclerAdapter = gifAdapter(gifsList,
+        recyclerAdapter = GifAdapter(gifsList,
                 { toast ("My URL = ${images.fixed_width.url}")})
         with(recyclerView) {
             layoutManager = GridLayoutManager(this.context, if (isPortrait()) 3 else 4)
+            //layoutManager = LinearLayoutManager(this.context)
             setHasFixedSize(true)
             adapter = recyclerAdapter
+            addOnScrollListener(EndlessScrollListener({pagingGifs()}, layoutManager as GridLayoutManager))
+        }
+    }
 
+    private fun pagingGifs() {
+        offset += LIMIT_SEARCH_QUERY
+        if (isSearch) getGifs(query, offset)
+        else getTrending(offset)
+        toast("AAAAAAA")
+    }
+
+    private fun addGifs(gifsList: List<Gif>) {
+        if (offset == 0) updateAdapter(gifsList)
+        else {
+//            loadedList = recyclerAdapter!!.getItems()
+//            loadedList!!.containsAll(gifsList)
+//            updateAdapter(loadedList!!)
+            addAdapter(gifsList)
+            toast("bbbbb")
         }
     }
 
@@ -58,7 +86,9 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener, android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                getGifs(query)
+                offset = 0
+                isSearch = true
+                getGifs(query, offset)
                 return false
         }
 
@@ -68,30 +98,30 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getGifs(query: String) {
+    private fun getGifs(query: String, offset: Int) {
         progressBar.visibility = View.VISIBLE
 
         RetrofitService.create()
-                .getSearchGifsRx(query, LIMIT_SEARCH_QUERY, API_KEY)
+                .getSearchGifsRx(query, LIMIT_SEARCH_QUERY, offset, API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
-                    response -> updateAdapter(response.data)
+                    response -> addGifs(response.data)
                     progressBar.visibility = View.GONE
                 }, { error ->
                     error.printStackTrace()
                 })
     }
 
-    private fun getTrending() {
+    private fun getTrending(offset: Int) {
         progressBar.visibility = View.VISIBLE
 
         RetrofitService.create()
-                .getTrendingGifsRx(LIMIT_SEARCH_QUERY, API_KEY)
+                .getTrendingGifsRx(LIMIT_SEARCH_QUERY, offset, API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
-                    response -> updateAdapter(response.data)
+                    response -> addGifs(response.data)
                     progressBar.visibility = View.GONE
                 }, { error ->
                     error.printStackTrace()
