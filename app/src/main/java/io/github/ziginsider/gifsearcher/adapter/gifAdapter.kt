@@ -29,13 +29,9 @@ class gifAdapter(gifs: List<Gif>,
     }
 
     override fun View.bind(item: Gif) {
-
         Glide.with(gifItem.context)
                 .asGif()
                 .load(item.images.fixed_width.url)
                 .into(gifItem)
     }
-
-
-
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.View
@@ -43,11 +44,10 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter = gifAdapter(gifsList,
                 { toast ("My URL = ${images.fixed_width.url}")})
         with(recyclerView) {
-            Log.d("TAG", gifsList.toString())
             layoutManager = GridLayoutManager(this.context, if (isPortrait()) 3 else 4)
-            //setHasFixedSize(true)
+            setHasFixedSize(true)
             adapter = recyclerAdapter
-            //scheduleLayoutAnimation()
+
         }
     }
 
