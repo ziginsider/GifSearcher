@@ -4,22 +4,21 @@ import android.app.SearchManager
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.View
 import io.github.ziginsider.gifsearcher.adapter.GifAdapter
 import io.github.ziginsider.gifsearcher.model.Gif
+import io.github.ziginsider.gifsearcher.model.SearchData
 import io.github.ziginsider.gifsearcher.retrofit.API_KEY
 import io.github.ziginsider.gifsearcher.retrofit.LIMIT_SEARCH_QUERY
 import io.github.ziginsider.gifsearcher.retrofit.RetrofitService
-import io.github.ziginsider.kotlindiffutil.utils.toast
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Action
-import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import java.net.CacheResponse
-import java.util.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        progressBar.visibility = View.GONE
+
         searchViewInit()
 
 
@@ -39,10 +40,11 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter?.update(gifsList) ?: setUpRecyclerView(gifsList)
     }
 
-    private fun setUpRecyclerView(userList: List<Gif>) {
-        recyclerAdapter = GifAdapter(userList, {})
+    private fun setUpRecyclerView(gifsList: List<Gif>) {
+        recyclerAdapter = GifAdapter(gifsList, {})
         with(recyclerView) {
-            layoutManager = LinearLayoutManager(this.context)
+            Log.d("TAG", gifsList.toString())
+            layoutManager = GridLayoutManager(this.context, 3)
             //setHasFixedSize(true)
             adapter = recyclerAdapter
             //scheduleLayoutAnimation()
@@ -56,9 +58,11 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener, android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                toast("I'm toast message! $query")
+                //toast("I'm toast message! $query")
+                progressBar.visibility = View.VISIBLE
+                getGifs(query)
                 return false
-            }
+        }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
@@ -66,36 +70,36 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun searchGiphyQuery(query: String) {
-        service.getSearchgifs(query, LIMIT_SEARCH_QUERY, API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Consumer<ResponseData>() {
-                    fun call(responseData: ResponseData) {
+    //TODO RX
+//    private fun searchGiphyQuery(query: String) {
+//        service.getSearchgifs(query, LIMIT_SEARCH_QUERY, API_KEY)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(object : Consumer<SearchData>() {
+//                    fun call(responseData: SearchData) {
+//
+//                        progressBar.visibility = View.GONE
+//                        val temp = getGiphyObjectsOutOfResponse(responseData)
+//                        Collections.reverse(temp)
+//                        for (temData in temp) {
+//                            giphyList.add(0, temData)
+//                        }
+//                        recyclerAdapter.update(giphyList)
+//
+//                    }
+//                })
+//    }
 
-                        progressBar.visibility = View.GONE
-                        val temp = getGiphyObjectsOutOfResponse(responseData)
-                        Collections.reverse(temp)
-                        for (temData in temp) {
-                            giphyList.add(0, temData)
-                        }
-                        adapter.setNewData(giphyList)
+    private fun getGifs(query: String) {
+        RetrofitService.create().getSearchGifs(query, LIMIT_SEARCH_QUERY, API_KEY).enqueue(object : Callback<SearchData> {
+            override fun onResponse(call: Call<SearchData>, response: Response<SearchData>) {
+                updateAdapter(response.body()!!.data)
+                progressBar.visibility = View.GONE
+            }
 
-                    }
-                })
-                .subscribe(object : Action1<ResponseData>() {
-                    fun call(responseData: ResponseData) {
-                        progressBar.visibility = View.GONE
-                        val temp = getGiphyObjectsOutOfResponse(responseData)
-                        Collections.reverse(temp)
-                        for (temData in temp) {
-                            giphyList.add(0, temData)
-                        }
-                        adapter.setNewData(giphyList)
-                    }
-                })
+            override fun onFailure(call: Call<SearchData>, t: Throwable?) {
+            }
+        })
     }
-
-
 }
 

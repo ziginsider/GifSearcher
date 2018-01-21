@@ -5,6 +5,9 @@ import android.view.View
 import io.github.ziginsider.gifsearcher.R
 import io.github.ziginsider.gifsearcher.model.Gif
 import android.text.TextUtils
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.gif_item.view.*
+
 //import com.squareup.picasso.Picasso
 
 
@@ -28,15 +31,20 @@ class GifAdapter(gifs: List<Gif>,
 
     override fun View.bind(item: Gif) {
 
-//        var image: GiphyImage? = null
-//        if (item.images != null) {
-//            if (item.images.original_still != null) {
-//                image = item.images.original_still
-//            }
-//        }
-//        if (image != null) {
-//            Picasso.with(context).load(image!!.url).placeholder(DrawableHelper.getRandomColorDrawable(context)).into(holder.image)
 //
-//        }
+//        Glide.with(holder?.itemView?.gifPicture?.context)
+//                .asGif()
+//                .load(item.images.fixed_width.url)
+//                .into(holder?.itemView?.gifPicture)
     }
+
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        super.onBindViewHolder(holder, position)
+        Glide.with(holder.itemView.gifItem.context)
+                .asGif()
+                .load(itemList[position].images.fixed_width.url)
+                .into(holder.itemView?.gifItem)
+    }
+
+
 }
