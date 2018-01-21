@@ -13,12 +13,12 @@
 
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/width_search_view"
+        android:layout_height="@dimen/height_search_view"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"
-        android:queryHint="GIF Search..."
+        android:layout_marginBottom="@dimen/bootom_margin_search_view"
+        android:queryHint="@string/hint_search_view"
         android:background="@android:color/holo_blue_light" />
 
     <ProgressBar

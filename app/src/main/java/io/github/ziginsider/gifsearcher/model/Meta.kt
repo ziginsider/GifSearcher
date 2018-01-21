@@ -12,5 +12,4 @@ class Meta(@SerializedName("status")
            val msg: String,
 
            @SerializedName("response_id")
-           val response_id:
-           String)
+           val response_id: String)

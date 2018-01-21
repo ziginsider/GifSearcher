@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width_search_view">300dp</dimen>
+    <dimen name="height_search_view">50dp</dimen>
+    <dimen name="bootom_margin_search_view">20dp</dimen>
+    <dimen name="width_gif_preview">130dp</dimen>
+    <dimen name="height_gif_preview">130dp</dimen>
+</resources>

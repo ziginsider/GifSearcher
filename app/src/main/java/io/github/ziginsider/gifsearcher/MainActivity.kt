@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.SearchView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.Log
 import android.view.View
 import io.github.ziginsider.gifsearcher.adapter.gifAdapter

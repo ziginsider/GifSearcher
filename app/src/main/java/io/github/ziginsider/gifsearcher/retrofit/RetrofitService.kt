@@ -26,11 +26,11 @@ interface RetrofitService {
 
 
     @GET("/v1/gifs/trending")
-    abstract fun getTrendingGifs(@Query("limit") limit: Int,
+    fun getTrendingGifs(@Query("limit") limit: Int,
                                  @Query("api_key") key: String): Call<SearchData>//Observable<SearchData>
 
     @GET("/v1/gifs/search")
-    abstract fun getSearchGifs(@Query("q") search: String,
+    fun getSearchGifs(@Query("q") search: String,
                                  @Query("limit") limit: Int,
                                  @Query("api_key") key: String): Call<SearchData>//Observable<SearchData>
 

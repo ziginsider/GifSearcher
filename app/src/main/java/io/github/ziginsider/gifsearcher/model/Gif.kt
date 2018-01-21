@@ -9,7 +9,9 @@ import com.google.gson.annotations.SerializedName
 class Gif(
         @SerializedName("id")
         val id: String,
+
         @SerializedName("type")
         val type: String,
+
         @SerializedName("images")
         val images: ImageSet)
