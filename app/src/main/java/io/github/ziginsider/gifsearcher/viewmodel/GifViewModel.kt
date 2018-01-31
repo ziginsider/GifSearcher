@@ -9,3 +9,5 @@ import io.github.ziginsider.gifsearcher.model.Gif
 
 class GifViewModel(var loadedGifs: List<Gif>? = null) : ViewModel()
 
+
+
