@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.SearchView
-import android.view.View
 import io.github.ziginsider.gifsearcher.adapter.EndlessScrollListener
 import io.github.ziginsider.gifsearcher.adapter.GifAdapter
 
@@ -112,16 +111,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getGifs(query: String, offset: Int) {
-        //progressBar.visibility = View.VISIBLE
         progressBar.visibleOrGone = true
-
         RetrofitService.create()
                 .getSearchGifsRx(query, LIMIT_SEARCH_QUERY, offset, API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     response -> addGifs(response.data)
-                    //progressBar.visibility = View.GONE
                     progressBar.visibleOrGone = false
                 }, { error ->
                     error.printStackTrace()
@@ -129,7 +125,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTrending(offset: Int) {
-        //progressBar.visibility = View.VISIBLE
         progressBar.visibleOrGone = true
         RetrofitService.create()
                 .getTrendingGifsRx(LIMIT_SEARCH_QUERY, offset, API_KEY)
@@ -137,7 +132,6 @@ class MainActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     response -> addGifs(response.data)
-                    //progressBar.visibility = View.GONE
                     progressBar.visibleOrGone = false
                 }, { error ->
                     error.printStackTrace()
