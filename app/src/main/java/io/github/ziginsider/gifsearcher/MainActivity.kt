@@ -3,6 +3,7 @@ package io.github.ziginsider.gifsearcher
 import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
@@ -10,6 +11,9 @@ import android.support.v7.widget.SearchView
 import android.view.View
 import io.github.ziginsider.gifsearcher.adapter.EndlessScrollListener
 import io.github.ziginsider.gifsearcher.adapter.GifAdapter
+import io.github.ziginsider.gifsearcher.binding.BindingAdapters
+import io.github.ziginsider.gifsearcher.binding.ProgressVisible
+import io.github.ziginsider.gifsearcher.databinding.ActivityMainBinding
 import io.github.ziginsider.gifsearcher.model.Gif
 import io.github.ziginsider.gifsearcher.retrofit.API_KEY
 import io.github.ziginsider.gifsearcher.retrofit.LIMIT_SEARCH_QUERY
@@ -35,12 +39,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        searchViewInit()
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main, BindingAdapters.Component())
+        val progressBarVisibility = ProgressVisible(true)
 
-        gifViewModel = ViewModelProviders.of(this).get(GifViewModel::class.java)
+        binding.setVariable(BR.state, progressBarVisibility)
+        binding.executePendingBindings()
 
-        if (gifViewModel!!.loadedGifs != null) updateAdapter(gifViewModel!!.loadedGifs!!)
-        else getTrending(offset)
+//        searchViewInit()
+//
+//        gifViewModel = ViewModelProviders.of(this).get(GifViewModel::class.java)
+//
+//        if (gifViewModel!!.loadedGifs != null) updateAdapter(gifViewModel!!.loadedGifs!!)
+//        else getTrending(offset)
     }
 
     private fun updateAdapter(gifsList: List<Gif>) {

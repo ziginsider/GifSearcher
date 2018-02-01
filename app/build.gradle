@@ -54,7 +54,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
 
     //databinding
-    kapt 'com.android.databinding:compiler:3.1.0-alpha06'
+    kapt 'com.android.databinding:compiler:3.0.1'
 
 
 
