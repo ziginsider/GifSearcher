@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         //databinding rules init
         val binding: ActivityMainBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_main)
-        val progressBarVisibility = ProgressVisible(true)
+        val progressBarVisibility = ProgressVisible(false)
 
         //databinding data
         binding.setVariable(BR.state, progressBarVisibility)
