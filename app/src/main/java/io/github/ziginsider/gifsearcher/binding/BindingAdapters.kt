@@ -9,7 +9,7 @@ import android.view.View
  */
 
 //view visible or gone
-object BindingAdapters {
+//object BindingAdapters {
 
     @set:BindingAdapter("visibleOrGone")
     var View.visibleOrGone
@@ -18,9 +18,9 @@ object BindingAdapters {
             visibility = if (value) View.VISIBLE else View.GONE
         }
 
-    class Component: DataBindingComponent {
-        override fun getBindingAdapters(): BindingAdapters {
-            return BindingAdapters
-        }
-    }
-}
+//    class Component: DataBindingComponent {
+//        override fun getBindingAdapters(): BindingAdapters {
+//            return BindingAdapters
+//        }
+//    }
+//}
