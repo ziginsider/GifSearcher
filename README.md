@@ -3,9 +3,6 @@ Gif Searcher for Qulix Systems
 
 Писал на Kotlin'e
 
-То, что успел. 
-(Ниже, довожу до рабочего состояния, после дедлайна 😕 ):
-
 https://github.com/ziginsider/GifSearcher/tree/second
 
 ## UPD:
