@@ -1,7 +1,7 @@
 # GifSearcher
 Gif Searcher for Qulix Systems
 
-Писал на Kotlin'e
+by Kotlin
 
 https://github.com/ziginsider/GifSearcher/tree/second
 
