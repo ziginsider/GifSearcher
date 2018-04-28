@@ -1,5 +1,5 @@
 # GifSearcher
-Gif Searcher for Qulix Systems
+Gif Searcher
 
 Giphy + Retrofit 2 + RxJava 2 + Kotlin
 
